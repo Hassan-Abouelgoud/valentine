@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Open Me! ❤️</title>
+    <title>A Special Surprise ❤️</title>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
         body {
@@ -13,24 +13,31 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: radial-gradient(circle, #fff0f3 0%, #ffdee9 100%);
+            /* Background Image - Romantic Roses */
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                        url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=2070&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
             font-family: 'Arial', sans-serif;
-            overflow: hidden; /* Prevents scrolling when button moves */
+            overflow: hidden;
         }
 
         #card {
-            background: white;
+            /* Frosted Glass Effect */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
             padding: 40px;
-            border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(255, 75, 110, 0.3);
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
             text-align: center;
-            max-width: 450px;
+            max-width: 400px;
             width: 85%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
             z-index: 10;
         }
 
-        h1 { color: #ff4b6e; font-size: 28px; }
-        p { color: #444; font-size: 18px; margin-bottom: 30px; }
+        h1 { color: #d43d5e; font-size: 28px; margin-top: 0; }
+        p { color: #444; font-size: 18px; margin-bottom: 30px; line-height: 1.5; }
 
         .btn-container {
             display: flex;
@@ -38,42 +45,50 @@
             align-items: center;
             gap: 20px;
             min-height: 100px;
+            position: relative;
         }
 
         button {
             padding: 15px 35px;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         #yesBtn {
-            background-color: #ff4b6e;
+            background: linear-gradient(45deg, #ff4b6e, #d43d5e);
             color: white;
-            box-shadow: 0 5px 15px rgba(255, 75, 110, 0.4);
+            transition: transform 0.2s;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.1);
         }
 
         #noBtn {
-            background-color: #acacac;
+            background-color: #666;
             color: white;
-            position: absolute; /* Needed for the "run away" logic */
-            transition: all 0.1s ease;
+            position: absolute;
+            transition: all 0.15s ease-out;
             z-index: 999;
         }
 
         .hidden { display: none; }
 
         .success-msg {
-            color: #ff4b6e;
-            animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            color: #d43d5e;
+            animation: heartBeat 1.2s infinite;
         }
 
-        @keyframes pop {
-            0% { transform: scale(0); }
-            100% { transform: scale(1); }
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            15% { transform: scale(1.1); }
+            30% { transform: scale(1); }
+            45% { transform: scale(1.15); }
+            60% { transform: scale(1); }
         }
     </style>
 </head>
@@ -81,9 +96,9 @@
 
     <div id="card">
         <div id="questionSection">
-            <div style="font-size: 60px; margin-bottom: 10px;">🌹</div>
-            <h1>Will you be my Valentine?</h1>
-            <p>Don't even think about saying no...</p>
+            <div style="font-size: 50px; margin-bottom: 15px;">💝</div>
+            <h1>I have a question...</h1>
+            <p>You're the most amazing person I know. Will you be my Valentine?</p>
             
             <div class="btn-container">
                 <button id="yesBtn" onclick="celebrate()">YES!</button>
@@ -92,49 +107,46 @@
         </div>
 
         <div id="celebration" class="hidden">
-            <div style="font-size: 60px;">🥰</div>
-            <h1 class="success-msg">Yay! Best Choice Ever!</h1>
-            <p>I knew you'd say yes (eventually). I love you! ❤️</p>
+            <div style="font-size: 60px;">💖</div>
+            <h1 class="success-msg">YES! 😍</h1>
+            <p>I can't wait to see you and celebrate together. You've made my day!</p>
+            <p style="font-size: 14px; color: #888;">I love you!</p>
         </div>
     </div>
 
     <script>
         function moveButton() {
             const noBtn = document.getElementById('noBtn');
+            const padding = 20;
             
-            // Calculate a random position anywhere on the screen
-            // Subtracting button size so it doesn't go off-edge
-            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
-            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+            // This makes the button jump to a random spot on the entire screen
+            const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - padding);
+            const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - padding);
             
-            noBtn.style.position = 'fixed'; // Make it jump relative to the whole screen
+            noBtn.style.position = 'fixed';
             noBtn.style.left = x + 'px';
             noBtn.style.top = y + 'px';
         }
 
         function celebrate() {
-            // Hide the question and the elusive "No" button
             document.getElementById('questionSection').classList.add('hidden');
             document.getElementById('noBtn').classList.add('hidden');
-            
-            // Show the success screen
             document.getElementById('celebration').classList.remove('hidden');
 
-            // Trigger fancy heart-colored confetti
-            var count = 200;
-            var defaults = { origin: { y: 0.7 } };
+            // Fire heart-colored confetti explosion
+            const count = 200;
+            const defaults = { origin: { y: 0.7 }, colors: ['#ff4b6e', '#ff99ac', '#ffffff'] };
 
             function fire(particleRatio, opts) {
-              confetti(Object.assign({}, defaults, opts, {
-                particleCount: Math.floor(count * particleRatio)
-              }));
+                confetti(Object.assign({}, defaults, opts, {
+                    particleCount: Math.floor(count * particleRatio)
+                }));
             }
 
             fire(0.25, { spread: 26, startVelocity: 55 });
             fire(0.2, { spread: 60 });
             fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
             fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
-            fire(0.1, { spread: 120, startVelocity: 45 });
         }
     </script>
 </body>
