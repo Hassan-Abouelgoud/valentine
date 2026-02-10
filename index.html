@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Question ❤️</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary-pink: #ff4b6e;
+            --soft-pink: #fff0f3;
+            --dark-pink: #d43d5e;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: var(--soft-pink);
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        #card {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(255, 75, 110, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+            transition: all 0.5s ease;
+        }
+
+        .heart-icon {
+            font-size: 50px;
+            color: var(--primary-pink);
+            margin-bottom: 20px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            color: var(--primary-pink);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #555;
+            font-size: 18px;
+            line-height: 1.5;
+            margin-bottom: 30px;
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            position: relative;
+            height: 50px;
+        }
+
+        button {
+            padding: 12px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #yesBtn {
+            background-color: var(--primary-pink);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 75, 110, 0.3);
+        }
+
+        #yesBtn:hover {
+            background-color: var(--dark-pink);
+            transform: scale(1.05);
+        }
+
+        #noBtn {
+            background-color: #eee;
+            color: #888;
+            position: absolute;
+            left: 55%; /* Start position next to Yes button */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #celebration h1 {
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="card">
+        <div id="questionSection">
+            <div class="heart-icon">❤️</div>
+            <h1>Hey Gorgeous!</h1>
+            <p>You make every day brighter just by being in it. I have a very important question...</p>
+            <p><strong>Will you be my Valentine?</strong></p>
+            
+            <div class="btn-container">
+                <button id="yesBtn" onclick="celebrate()">Yes!</button>
+                <button id="noBtn" onmouseover="moveNoButton()">No</button>
+            </div>
+        </div>
+
+        <div id="celebration" class="hidden">
+            <div class="heart-icon">💖</div>
+            <h1>YAY! I Knew It! 🎉</h1>
+            <p>You've made me the happiest person alive. I can't wait to spend the day with you!</p>
+            <p style="font-size: 14px; color: #999;">(I'll be picking you up at 7!)</p>
+        </div>
+    </div>
+
+    <script>
+        // Function to make the "No" button run away
+        function moveNoButton() {
+            const noBtn = document.getElementById('noBtn');
+            
+            // Calculate random positions within the visible window
+            const padding = 50;
+            const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+            const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+            
+            const randomX = Math.floor(Math.random() * maxX);
+            const randomY = Math.floor(Math.random() * maxY);
+            
+            noBtn.style.position = 'fixed';
+            noBtn.style.left = randomX + 'px';
+            noBtn.style.top = randomY + 'px';
+        }
+
+        // Function to trigger confetti and show the "Yes" screen
+        function celebrate() {
+            // Hide question, show celebration
+            document.getElementById('questionSection').classList.add('hidden');
+            document.getElementById('celebration').classList.remove('hidden');
+
+            // Fire heart-themed confetti
+            const duration = 5 * 1000;
+            const animationEnd = Date.now() + duration;
+            const defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            const interval = setInterval(function() {
+              const timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              const particleCount = 50 * (timeLeft / duration);
+              // since particles fall down, start a bit higher than random
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+    </script>
+</body>
+</html>
